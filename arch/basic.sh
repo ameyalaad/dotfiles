@@ -62,7 +62,7 @@ parted -s "$DISK" \
 
 wait
 
-BOOT="dev/sda1"
+BOOT="/dev/sda1"
 # Formatting the ESP as FAT32.
 print "Formatting the $BOOT partition as ext4."
 mkfs.ext4 -F $BOOT &>/dev/null
