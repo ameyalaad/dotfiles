@@ -20,12 +20,6 @@ wait () {
     done
 }
 
-# Selecting a kernel to install (function). 
-kernel_selector () {
-    print "Installing Linux zen kernel: A Linux kernel optimized for desktop usage"
-    kernel="linux-zen"
-}
-
 # Selecting a way to handle internet connection (function). 
 network_selector () {
     print "Installing NetworkManager."
@@ -70,12 +64,9 @@ mkfs.ext4 -F $BOOT
 print "Mounting the newly created volume."
 mount $BOOT /mnt
 
-# Setting up the kernel.
-kernel_selector
-
 # Pacstrap (setting up a base sytem onto the new root).
 print "Installing the base system (it may take a while)."
-pacstrap /mnt base $kernel base-devel nano grub
+pacstrap /mnt base linux-zen base-devel nano grub
 
 # Setting up the network.
 network_selector
