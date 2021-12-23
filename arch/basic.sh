@@ -8,6 +8,18 @@ print () {
     echo -e "\e[1m\e[93m[ \e[92m•\e[93m ] \e[4m$1\e[0m"
 }
 
+# Wait for enter to be pressed (debug function)
+wait () {
+    echo "Press [ENTER] to continue"
+    while [ true ] ; do
+        read -s -N 1 key
+        if [[ $key == $'\x0a' ]];
+        then
+            return 0
+        fi
+    done
+}
+
 # Selecting a kernel to install (function). 
 kernel_selector () {
     print "Installing Linux Zen kernel: A Linux kernel optimized for desktop usage"
@@ -48,6 +60,8 @@ parted -s "$DISK" \
     mkpart primary ext4 1MiB 100% \
     set 1 boot on
 
+wait
+
 BOOT="dev/sda1"
 # Formatting the ESP as FAT32.
 print "Formatting the $BOOT partition as ext4."
@@ -57,12 +71,16 @@ mkfs.ext4 -F $BOOT &>/dev/null
 print "Mounting the newly created volume."
 mount $BOOT /mnt
 
+wait 
+
 # Setting up the kernel.
 kernel_selector
 
 # Pacstrap (setting up a base sytem onto the new root).
 print "Installing the base system (it may take a while)."
 pacstrap /mnt base $kernel base-devel nano
+
+wait
 
 # Setting up the network.
 network_selector
