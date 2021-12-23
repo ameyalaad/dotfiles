@@ -126,5 +126,6 @@ if [ -n "$username" ]; then
 fi
 
 # Finishing up.
+umount -R /mnt
 print "Done, you may now wish to reboot (further changes can be done by chrooting into /mnt)."
 exit
