@@ -26,7 +26,7 @@ AP_PROGS="pantheon-files pantheon-terminal man-db man-pages texinfo"
 pacman -S $DE_PROGS $SV_PROGS $TC_PROGS $AP_PROGS --needed --noconfirm
 
 print "Setting up LightDM"
-sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=io.elementary.greeter'
+sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=io.elementary.greeter/' /etc/lightdm/lightdm.conf
 
 print "Enabling LightDM"
 systemctl enable lightdm
