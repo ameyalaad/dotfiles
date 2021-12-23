@@ -31,18 +31,20 @@ network_selector () {
     print "Installing NetworkManager."
     pacstrap /mnt networkmanager
     print "Enabling NetworkManager."
-    systemctl enable NetworkManager --root=/mnt &>/dev/null
+    systemctl enable NetworkManager --root=/mnt
 }
 
 
 # Setting up the hostname (function).
 hostname_selector () {
+    print "Setting Hostname."
     hostname=no
     echo "$hostname" > /mnt/etc/hostname
 }
 
 # Setting up the locale (function).
 locale_selector () {
+    print "Setting Locale."
     echo "en_US.UTF-8 UTF-8"  > /mnt/etc/locale.gen
     echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 }
@@ -61,9 +63,8 @@ parted -s "$DISK" \
     set 1 boot on
 
 BOOT="/dev/sda1"
-# Formatting the ESP as FAT32.
 print "Formatting the $BOOT partition as ext4."
-mkfs.ext4 -F $BOOT &>/dev/null
+mkfs.ext4 -F $BOOT
 
 # Mounting the newly created subvolumes.
 print "Mounting the newly created volume."
