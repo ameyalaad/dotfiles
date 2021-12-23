@@ -43,8 +43,8 @@ hostname_selector () {
 
 # Setting up the locale (function).
 locale_selector () {
-    echo "$en_US.UTF-8 UTF-8"  > /mnt/etc/locale.gen
-    echo "LANG=$en_US.UTF-8" > /mnt/etc/locale.conf
+    echo "en_US.UTF-8 UTF-8"  > /mnt/etc/locale.gen
+    echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 }
 
 
@@ -106,8 +106,7 @@ arch-chroot /mnt /bin/bash -e <<EOF
     timedatectl set-timezone Asia/Kolkata
     
     # Generating locales.
-    echo "Generating locales."
-    locale-gen &>/dev/null
+    locale-gen
     
     # Installing GRUB.
     echo "Installing GRUB on /boot."
