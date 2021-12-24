@@ -16,6 +16,10 @@ wait () {
         fi
     done
 }
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
 
 print "Welcome to the Pantheon Desktop Environment setup for Arch by Ameya"
 DE_PROGS="pantheon-session gala wingpanel wingpanel-indicator-datetime wingpanel-indicator-network wingpanel-indicator-notifications wingpanel-indicator-power wingpanel-indicator-session pantheon-applications-menu plank"
@@ -30,3 +34,40 @@ sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=io.elementary.greet
 
 print "Enabling LightDM"
 systemctl enable lightdm
+
+print "Adding plank to startup"
+cat > /etc/xdg/autostart/plank.desktop <<EOF
+[Desktop Entry]
+Name=Plank
+Comment=Stupidly simple.
+Exec=plank
+Icon=plank
+Terminal=false
+Type=Application
+Categories=Utility;
+NoDisplay=true
+X-GNOME-Autostart-Notify=false
+X-GNOME-AutoRestart=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Phase=Panel
+OnlyShowIn=Pantheon;
+
+EOF
+
+print "Setting up yay from AUR"
+USER=no
+print "WARNING: this will be run as the user $USER."
+wait
+
+pacman -S git --needed --noconfirm
+sudo -u $USER bash <<EOF
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -sic --noconfirm --needed
+rm -rf /tmp/yay
+
+EOF
+
+print "Finished setup! Reboot to enjoy the Pantheon Experience"
+
