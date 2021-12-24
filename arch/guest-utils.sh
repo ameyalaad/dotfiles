@@ -1,3 +1,22 @@
+#!/bin/bash
+
+# Pretty print (function).
+print () {
+    echo -e "\e[1m\e[93m[ \e[92m•\e[93m ] \e[4m$1\e[0m"
+}
+
+# Wait for enter to be pressed (debug function)
+wait () {
+    echo "Press [ENTER] to continue"
+    while [ true ] ; do
+        read -s -N 1 key
+        if [[ $key == $'\x0a' ]];
+        then
+            return 0
+        fi
+    done
+}
+
 # Virtualization check (function).
 virt_check () {
     hypervisor=$(systemd-detect-virt)
